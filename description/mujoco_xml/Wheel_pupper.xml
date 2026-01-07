@@ -170,7 +170,7 @@
                         <inertial pos="0.03866 0.03585 0.01833"
                             quat="0.653281 0.270598 -0.653281 0.270598" mass="0.05"
                             diaginertia="7.7e-05 7.55e-05 5.5e-06" />
-                        <joint name="Wheel_FL" pos="0 0 0" axis="0 0 1" range="-0.71 2.79" />
+                        <joint name="Wheel_FL" pos="0 0 0" axis="0 0 -1" range="-2.79 0.71" />
                         <geom size="0.01995" pos="0.06231 0.06216 0.018" quat="1.32679e-06 0 0 1"
                             type="sphere" class="collision" />
                         <geom pos="0 0 0.035" euler="0 -1.5708 1.5708" type="mesh"
@@ -246,7 +246,7 @@
                         <inertial pos="0.03866 0.03585 0.01833"
                             quat="0.653281 0.270598 -0.653281 0.270598" mass="0.05"
                             diaginertia="7.7e-05 7.55e-05 5.5e-06" />
-                        <joint name="Wheel_BL" pos="0 0 0" axis="0 0 1" range="-0.71 2.79" />
+                        <joint name="Wheel_BL" pos="0 0 0" axis="0 0 -1" range="-2.79 0.71" />
                         <geom size="0.01995" pos="0.06231 0.06216 0.018" quat="1.32679e-06 0 0 1"
                             type="sphere" class="collision" />
                         <geom pos="0 0 0.035" euler="0 -1.5708 1.5708" type="mesh"
