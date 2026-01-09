@@ -62,7 +62,8 @@
 
         <default class="wheel">
             <joint limited="false" />
-            <general ctrllimited="false"/>
+            <!-- Velocity control: F = kd * (ctrl - dq). Gain=1.0 is kd. -->
+            <general ctrllimited="false" gainprm="-1.0 0 0" biasprm="0 0 -1.0"/>
         </default>
 
         <joint armature="0.0016" type="hinge" damping="0.01" frictionloss="0.125" limited="true" />
