@@ -136,7 +136,7 @@
                     <body name="Wheel_FR" pos="0 -0.0494 0.0685" quat="0.707105 0 0.707108 0" gravcomp="0" >
                         <inertial pos="0 0 0.035" mass="0.05" diaginertia="2.75142e-5 2.75142e-5 4.93951e-5" />
                         <joint name="Wheel_FR" pos="0 0 0" axis="0 0 1" class="wheel" />
-                        <geom size="0.04445 0.013" pos="0 0 0.035" type="cylinder" class="collision" />
+                        <geom size="0.04445 0.013" pos="0 0 0.035" type="capsule" class="collision" />
                         <geom pos="0 0 0.035" euler="0 -1.5708 1.5708" type="mesh"
                             contype="0" conaffinity="0" group="1" density="0"
                             mesh="FR_WheelMesh" />
@@ -171,7 +171,7 @@
                         quat="9.38184e-07 -0.707108 9.38187e-07 0.707105" gravcomp="0">
                         <inertial pos="0 0 0.035" mass="0.05" diaginertia="2.75142e-5 2.75142e-5 4.93951e-5" />
                         <joint name="Wheel_FL" pos="0 0 0" axis="0 0 -1" class="wheel" />
-                        <geom size="0.04445 0.013" pos="0 0 0.035" type="cylinder" class="collision" />
+                        <geom size="0.04445 0.013" pos="0 0 0.035" type="capsule" class="collision" />
                         <geom pos="0 0 0.035" euler="0 -1.5708 1.5708" type="mesh"
                             contype="0" conaffinity="0" group="1" density="0"
                             mesh="FL_WheelMesh" />
@@ -206,7 +206,7 @@
                         gravcomp="0">
                         <inertial pos="0 0 0.035" mass="0.05" diaginertia="2.75142e-5 2.75142e-5 4.93951e-5" />
                         <joint name="Wheel_BR" pos="0 0 0" axis="0 0 1" class="wheel" />
-                        <geom size="0.04445 0.013" pos="0 0 0.035" type="cylinder" class="collision" />
+                        <geom size="0.04445 0.013" pos="0 0 0.035" type="capsule" class="collision" />
                         <geom pos="0 0 0.035" euler="0 -1.5708 1.5708" type="mesh"
                             contype="0" conaffinity="0" group="1" density="0"
                             mesh="BR_WheelMesh" />
@@ -241,7 +241,7 @@
                         quat="9.38184e-07 -0.707108 9.38187e-07 0.707105" gravcomp="0">
                         <inertial pos="0 0 0.035" mass="0.05" diaginertia="2.75142e-5 2.75142e-5 4.93951e-5" />
                         <joint name="Wheel_BL" pos="0 0 0" axis="0 0 -1" class="wheel" />
-                        <geom size="0.04445 0.013" pos="0 0 0.035" type="cylinder" class="collision" />
+                        <geom size="0.04445 0.013" pos="0 0 0.035" type="capsule" class="collision" />
                         <geom pos="0 0 0.035" euler="0 -1.5708 1.5708" type="mesh"
                             contype="0" conaffinity="0" group="1" density="0"
                             mesh="BL_WheelMesh" />
