@@ -1,66 +1,70 @@
-# Wheeled Pupper V3 - Description & RL Assets
+# Wheeled Pupper v3 Digital Twin – MuJoCo & ROS Description
 
-This repository contains the description files (URDF, MJCF), scripts, and assets for the **Wheeled Pupper V3** robot. It represents a specialized fork of the original Pupper V3 description, modified to support **wheeled-legged locomotion** in Reinforcement Learning (RL) environments.
+**High-fidelity mechanical description and simulation assets for the Wheeled Pupper v3 hybrid robot.**
 
-## 🛞 From Legged to Wheeled: Key Modifications
-This repository implements the conversion of a standard quadruped into a wheeled-legged robot. The primary contributions and edits include:
+![Robot Render](media/robot_render.png)
+*MuJoCo simulation render of the Wheeled Pupper v3, featuring custom wheel actuators and modified kinematics.*
 
-### 1. Mechanical & URDF Overhaul
-- **End-Effector Swap:** Replaced the standard point-contact feet with **wheel geometries** in the URDF/XML description.
-- **Continuous Rotation:** Modified the distal joints (formerly ankles) to support **continuous rotation** (infinite joint limits), enabling the robot to drive via rolling rather than stepping.
+## Overview
 
-### 2. Hybrid "Split" Control Architecture
-Unlike the standard position-controlled quadruped, this robot uses a hybrid control scheme:
-- **Legs:** Remain under **Position Control** (impedance) to maintain stance height and posture.
-- **Wheels:** Converted to **Velocity/Torque Control**. This allows the RL policy to output direct driving velocities or torques, decoupling the drive-train dynamics from the postural dynamics.
-- **Actuator Tuning:** Adjusted `ctrlrange` and gains (Kp/Kd) in `actuators.xml` and `Wheel_pupper.xml` to support higher-speed rolling behaviors and remove default position-holding damping on the wheels.
+This repository houses the **Digital Twin** and mechanical description files (URDF, MJCF) for the Wheeled Pupper v3. It serves as the single source of truth for the robot's kinematics, utilized across:
+1.  **Reinforcement Learning**: High-performance MuJoCo MJX environments for gait training.
+2.  **ROS 2**: Real-time state estimation and visualization.
+3.  **Physical Hardware**: Fabrication-ready specifications for the shape-memory polymer morphing shin design.
 
-### 3. Simulation & RL Integration
-- **Action Space Adaptation:** Updated the RL policy configuration (in `Colab_wheeled.ipynb`) to handle the mixed action space (Position targets for legs, Velocity targets for wheels).
-- **Environment Updates:** Configured the MuJoCo environment/XMLs to handle the unique physics of wheeled locomotion, including friction adjustments and infinite rotation handling.
+## Key Features
 
----
+### 🔧 Mechanical Modeling & CAD
+- **SolidWorks to URDF Pipeline**: Automated export and cleaning of complex geometries to standard URDF format.
+- **Hybrid Kinematics**: Modified the standard quadrupedal chain to support **continuous rotation joints** at the end-effectors (wheels) while retaining 12-DoF reconfiguration capabilities.
+- **Inertial Accuracy**: Precise mass and inertia tensors derived from CAD for realistic Sim-to-Real dynamics transfer.
 
-## 📂 Repository Structure
+### ⚡ Actuator Dynamics (Split Control)
+Unlike standard position-controlled robots, this description implements a **Hybrid Action Space**:
+*   **Leg Joints (Hips/Thighs)**: High-stiffness **Position Control** (impedance) for stance stability.
+*   **Wheel Joints**: Low-damping **Velocity/Torque Control** for efficient rolling locomotion.
 
-- **`description/`**: Core assets.
-  - `urdf/`: URDF files exported from CAD and processed.
-  - `mujoco_xml/`: Generated MuJoCo XML model files (e.g., `Wheel_pupper.xml`, `pupper_v3_complete.xml`).
-  - `meshes/`: STL/OBJ mesh files.
-- **`scripts/`**: Utilities related to model generation and asset management.
-  - `fix_urdf.py`: Cleans up URDFs exported from CAD tools (e.g., Phobos/Blender).
-  - `create_mujoco_xml.py`: Composes the final MuJoCo XML by combining the robot body with sensors, actuators, and environment settings.
-- **`VIBE FILES AND NOTES/`**:
-  - `car.xml`: Simplified car model used for isolating and testing wheel control logic.
-  - `notes.txt`: Design notes on control strategies (Velocity vs Motor), action scaling, and implementation details.
+![Kinematics Demo](media/kinematics.gif)
+*Visualization of the joint hierarchies and range-of-motion limits.*
 
-## 🚀 Workflows
+## Repository Structure
 
-### 1. Generating MuJoCo Models
-To generate a complete MuJoCo XML model from the base components:
-
-```bash
-python3 scripts/create_mujoco_xml.py --xml_dir description/mujoco_xml
+```
+├── description/
+│   ├── mujoco_xml/      # Optimized XMLs for MJX/Gym (Wheel_pupper.xml)
+│   ├── urdf/            # ROS 2 compatible descriptions
+│   └── meshes/          # Visual and collision assets
+├── scripts/             # Utilities for URDF cleaning and MJCF composition
+└── launch/              # ROS 2 launch files for RViz visualization
 ```
 
-**Key Arguments:**
-- `--mjx`: Generate a model compatible with MJX (hardware-accelerated MuJoCo).
-- `--fixed_base`: Generate a model with the torso fixed in space (debug mode).
-- `--position_control`: (Optional) Flag to force position control on all joints (Note: Wheeled Pupper typically uses the custom split control defined in the XMLs).
+## Quick Start (Visualization)
 
-### 2. Integration with RL (Colab)
-The generated XML files (specifically `Wheel_pupper.xml`) are designed for the RL training pipeline (`Colab_wheeled.ipynb`).
-- **Dependency Fixes:** This repo includes fixes for JAX/Orbax version compatibility issues found in the original pipelines.
-- **Loading:** Ensure the `Colab_wheeled.ipynb` loads the local `Wheel_pupper.xml` to utilize the custom wheel actuators.
+### MuJoCo (Physics Sim)
+To view the model and physics properties:
+```bash
+# Verify the XML structure
+python3 -m mujoco.viewer --mjcf=description/mujoco_xml/Wheel_pupper.xml
+```
 
-### 3. Usage with ROS 2 (Visualization)
-- **Build:** `colcon build`
-- **Visualize:** `ros2 launch pupper_v3_description display_model.launch.py`
+### ROS 2 (Kinematics)
+To visualize the URDF in RViz:
+```bash
+colcon build
+source install/setup.bash
+ros2 launch pupper_v3_description display_model.launch.py
+```
 
-## 🛠️ Modification Guide
+## Integration with RL
 
-### Adjusting Actuators
-To tune the wheel speed or torque:
-1.  Edit `description/mujoco_xml/actuators.xml` or the specific `<actuator>` tags in `Wheel_pupper.xml`.
-2.  Modify `ctrlrange` to increase max speed/torque.
-3.  Adjust `kp` (gain) and `limit` attributes to refine the split control behavior.
+This description is directly consumed by the [Training Repository](https://github.com/TundTT/colab_Wheel_pupperv3). The `Wheel_pupper.xml` defines:
+- **Sensors**: IMU, joint encoders, frame velocities.
+- **Actuators**: Custom gain (`kp`) and damping (`kv`) profiles for the hybrid transmission.
+- **Collision Geometries**: Optimized primitives for fast GPU-based contact detection in Brax/MJX.
+
+## Acknowledgments
+*   **UW–Madison LeggedAI Lab**: For support in hardware verification.
+*   **Stanford Student Robotics**: Original Pupper v3 mechanical baseline.
+
+---
+**Author**: [Tund Theerawit](https://www.linkedin.com/in/tund-theerawit) | [GitHub](https://github.com/TundTT)
