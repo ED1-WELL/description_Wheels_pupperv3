@@ -49,7 +49,7 @@
     <!-- Default Settings -->
     <default>
         <general forcerange="-3 3" forcelimited="true" biastype="affine" gainprm="5.0 0 0"
-            biasprm="0 -5.0 -0.1" ctrlrange="-5 5" ctrllimited="true" />
+            biasprm="0 -5.0 -0.1" ctrlrange="-3 3" ctrllimited="true" />
 
 
         <!-- visual geom will go to group 4 -->
